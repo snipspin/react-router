@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -52,6 +52,14 @@ const useStyles = makeStyles(theme => ({
 export default function SimpleTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [posts, setPosts] = useState([]);
+  const addNewPost = () => {
+    let newPost = createNewPost(`Blogpost numero ${posts.length}`, `This is the body of ${posts.length}`);
+    console.log(newPost);
+    console.log(posts);
+    setPosts([newPost, ...posts]);
+}
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -70,11 +78,15 @@ export default function SimpleTabs() {
       </AppBar>
       <TabPanel>
       <Route path="/home" render={() => <Home message={"Home shows a message"} />} />
-      <Route path="/blog" render={() => <Blog message={"Blog shows a message"} />} />
+      <Route path="/blog" render={() => <Blog message={"Blog shows a message"} addBlogPost={addNewPost} blogPosts={posts} />} />
       <Route path="/projects" render={() => <Projects message={"Projects shows a message"} />} />
       <Route path="/about" render={() => <About message={"About shows a message"} />} />
       </TabPanel>
       </Router>
     </div>
   );
+}
+
+function createNewPost (title, body) {
+  return {title: title, body: body};
 }
