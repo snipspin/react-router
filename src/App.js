@@ -7,6 +7,17 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
+import Home from './Home';
+import Blog from './Blog';
+import Projects from './Projects';
+import About from './About';
+
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -30,12 +41,6 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -54,22 +59,22 @@ export default function SimpleTabs() {
 
   return (
     <div className={classes.root}>
+      <Router>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label={<Link to="/home">Home</Link>} />
+          <Tab label={<Link to="/blog">Blog</Link>} />
+          <Tab label={<Link to="/projects">Projects</Link>} />
+          <Tab label={<Link to="/about">About</Link>} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        Item One
+      <TabPanel>
+      <Route path="/home" render={() => <Home message={"Home shows a message"} />} />
+      <Route path="/blog" render={() => <Blog message={"Blog shows a message"} />} />
+      <Route path="/projects" render={() => <Projects message={"Projects shows a message"} />} />
+      <Route path="/about" render={() => <About message={"About shows a message"} />} />
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
+      </Router>
     </div>
   );
 }
